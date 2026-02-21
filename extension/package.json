@@ -1,0 +1,19 @@
+{
+  "name": "interceptkit-extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:chrome": "node scripts/build.mjs --target=chrome",
+    "build:firefox": "node scripts/build.mjs --target=firefox",
+    "watch": "node scripts/build.mjs --watch --target=firefox",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.24",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.3"
+  }
+}

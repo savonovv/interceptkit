@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://interceptkit.dev/schemas/rule-schema.json",
+  "title": "InterceptKit Rewrite Rule",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "enabled",
+    "priority",
+    "matcher",
+    "action",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "priority": {
+      "type": "integer"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "matcher": {
+      "type": "object",
+      "required": [
+        "urlPattern"
+      ],
+      "properties": {
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "urlPattern": {
+          "type": "string"
+        },
+        "headerEquals": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "queryEquals": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "bodyContains": {
+          "type": "string"
+        }
+      }
+    },
+    "action": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/mockResponse"
+        },
+        {
+          "$ref": "#/$defs/rewritePassThrough"
+        },
+        {
+          "$ref": "#/$defs/sequence"
+        }
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "transform": {
+      "type": "object",
+      "properties": {
+        "setHeaders": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "removeHeaders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "replaceBody": {
+          "type": "string"
+        },
+        "jsonSet": {
+          "type": "object"
+        }
+      }
+    },
+    "mockResponse": {
+      "type": "object",
+      "required": [
+        "type",
+        "status"
+      ],
+      "properties": {
+        "type": {
+          "const": "mockResponse"
+        },
+        "status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "body": {
+          "type": "string"
+        },
+        "contentType": {
+          "type": "string"
+        },
+        "delayMs": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "rewritePassThrough": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "rewritePassThrough"
+        },
+        "request": {
+          "$ref": "#/$defs/transform"
+        },
+        "response": {
+          "$ref": "#/$defs/transform"
+        },
+        "delayMs": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "sequence": {
+      "type": "object",
+      "required": [
+        "type",
+        "steps"
+      ],
+      "properties": {
+        "type": {
+          "const": "sequence"
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "action"
+            ],
+            "properties": {
+              "action": {
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/mockResponse"
+                  },
+                  {
+                    "$ref": "#/$defs/rewritePassThrough"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InterceptKit Setup</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f6f8fb;
+        --surface: #ffffff;
+        --text: #132035;
+        --muted: #5c6779;
+        --primary: #0f6df5;
+        --danger: #c2362c;
+        --border: #dbe2ea;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Noto Sans", sans-serif;
+        background: radial-gradient(circle at top right, #dbeaff, #f6f8fb 45%);
+        color: var(--text);
+      }
+
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 24px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      h1,
+      h2 {
+        margin: 0 0 10px;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      button,
+      select,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--text);
+        border-radius: 8px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+
+      button.primary {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+
+      button.danger {
+        color: #fff;
+        background: var(--danger);
+        border-color: var(--danger);
+      }
+
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 8px;
+      }
+
+      .status-item {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .status-item b {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .ok {
+        color: #127b2b;
+      }
+
+      .warn {
+        color: #9d6a00;
+      }
+
+      form {
+        display: grid;
+        gap: 8px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      input,
+      select,
+      textarea {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px;
+      }
+
+      textarea {
+        min-height: 100px;
+      }
+
+      #rulesList {
+        display: grid;
+        gap: 8px;
+      }
+
+      .rule-row {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .small {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="card">
+        <h1>InterceptKit Setup</h1>
+        <p class="small">
+          Install proxy binary first, then enable local proxy settings from this page.
+        </p>
+        <p id="activity" class="small">Idle.</p>
+        <div class="actions">
+          <button id="downloadProxy" class="primary" type="button">Proxy Release</button>
+          <button id="runChecks" type="button">Run Setup Check</button>
+          <button id="enableProxy" class="primary" type="button">Enable Proxy</button>
+          <button id="restoreProxy" class="danger" type="button">Restore Proxy</button>
+          <button id="toggleInterception" type="button">Toggle Interception</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Setup Checklist</h2>
+        <div id="statusGrid" class="status-grid"></div>
+      </section>
+
+      <section class="card">
+        <h2>Create Rule</h2>
+        <form id="ruleForm">
+          <div class="form-row">
+            <label>
+              Name
+              <input id="ruleName" required placeholder="Login success override" />
+            </label>
+            <label>
+              Method
+              <select id="ruleMethod">
+                <option value="">Any</option>
+                <option>GET</option>
+                <option>POST</option>
+                <option>PUT</option>
+                <option>PATCH</option>
+                <option>DELETE</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            URL Pattern
+            <input id="rulePattern" required placeholder="http://api.local/v1/login*" />
+          </label>
+          <label>
+            Mode
+            <select id="ruleMode">
+              <option value="mockResponse">Mock response</option>
+              <option value="rewritePassThrough">Rewrite pass-through response body</option>
+            </select>
+          </label>
+          <div class="form-row">
+            <label>
+              Priority
+              <input id="rulePriority" type="number" value="0" />
+            </label>
+            <label>
+              Mock Status
+              <input id="ruleStatus" type="number" min="100" max="599" value="200" />
+            </label>
+          </div>
+          <label>
+            Response Body
+            <textarea id="ruleBody" placeholder='{"ok": true}'></textarea>
+          </label>
+          <button class="primary" type="submit">Save Rule</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Rules</h2>
+        <div id="rulesList"></div>
+      </section>
+    </main>
+    <script type="module" src="./options.js"></script>
+  </body>
+</html>

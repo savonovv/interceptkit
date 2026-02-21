@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InterceptKit</title>
+    <style>
+      body {
+        margin: 0;
+        width: 320px;
+        font-family: "Segoe UI", "Noto Sans", sans-serif;
+        background: #0f1724;
+        color: #e8eefc;
+      }
+
+      main {
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+      }
+
+      button {
+        border-radius: 8px;
+        border: 1px solid #33455e;
+        background: #1f3048;
+        color: #fff;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+
+      .small {
+        color: #a9b8d2;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h3>InterceptKit</h3>
+      <div id="quickStatus" class="small">Checking proxy...</div>
+      <button id="openOptions" type="button">Open Setup & Rules</button>
+    </main>
+    <script type="module" src="./popup.js"></script>
+  </body>
+</html>

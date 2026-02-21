@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InterceptKit Panel</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Noto Sans", sans-serif;
+        background: #0e1420;
+        color: #ecf2ff;
+      }
+
+      header {
+        padding: 10px 12px;
+        border-bottom: 1px solid #263247;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #requests {
+        display: grid;
+        gap: 6px;
+        padding: 10px;
+      }
+
+      .request-row {
+        border: 1px solid #2e3b53;
+        border-radius: 8px;
+        padding: 8px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+      }
+
+      .meta {
+        color: #9fb1cf;
+        font-size: 0.85rem;
+      }
+
+      button {
+        border-radius: 6px;
+        border: 1px solid #355585;
+        background: #1a3c6d;
+        color: #fff;
+        padding: 6px 8px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>InterceptKit Network Capture</strong>
+      <span id="captureStatus">Listening...</span>
+    </header>
+    <section id="requests"></section>
+    <script type="module" src="./panel.js"></script>
+  </body>
+</html>
